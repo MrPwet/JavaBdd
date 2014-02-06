@@ -2,8 +2,10 @@ package org.jbdd.pwet;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by mrpwet on 06/02/14.
@@ -65,6 +67,28 @@ public class Test {
             pm.addArticle(user2.getIdPanier(), filtre.getIdArticle(),2);
             pm.update(user2.getIdPanier(), reflex.getIdArticle(), 2);
             pm.delete(user2.getIdPanier(), filtre.getIdArticle());
+
+            //affichage du panier du client 1
+            List<List<Object>> lstuser1 = pm.readAll(user1.getIdPanier());
+            float totalHT1 = 0;
+            for(int i = 0 ; i < lstuser1.size() ; i++) {
+                List<Object> lstemp = lstuser1.get(i);
+                System.out.println("\nArticle : " + lstemp.get(0) + "\nQuantite : " + lstemp.get(1) + "\nPrix HT : " + lstemp.get(2));
+                totalHT1 += Float.parseFloat(lstemp.get(2).toString());
+            }
+            System.out.println("Somme HT du panier = " + totalHT1);
+            System.out.println("Somme TTC du panier = " + totalHT1 * 1.212);
+
+            //affichage du panier du client 2
+            List<List<Object>> lstuser2 = pm.readAll(user2.getIdPanier());
+            float totalHT2 = 0;
+            for(int i = 0 ; i < lstuser2.size() ; i++) {
+                List<Object> lstemp = lstuser2.get(i);
+                System.out.println("\nArticle : " + lstemp.get(0) + "\nQuantite : " + lstemp.get(1) + "\nPrix HT : " + lstemp.get(2));
+                totalHT2 += Float.parseFloat(lstemp.get(2).toString());
+            }
+            System.out.println("Somme HT du panier = " + totalHT2);
+            System.out.println("Somme TTC du panier = " + totalHT2 * 1.212);
 
             conn.commit();
         } catch (Exception e) {
