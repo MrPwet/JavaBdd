@@ -127,4 +127,22 @@ public class PanierManager {
         }
         return lst;
     }
+
+    public int cleanPanier(int idPanier) {
+        int n = -1;
+        PreparedStatement pstm = null;
+
+        try {
+            String sql = "delete from Comporte where idPanier=?";
+            pstm = conn.prepareStatement(sql);
+            int i = 1;
+            pstm.setInt(i++, idPanier);
+            n = pstm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {pstm.close();} catch (Exception ignore) {}
+        }
+        return n;
+    }
 }

@@ -3,9 +3,7 @@ package org.jbdd.pwet;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.text.NumberFormat;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by mrpwet on 06/02/14.
@@ -70,26 +68,40 @@ public class Test {
 
             //affichage du panier du client 1
             List<List<Object>> lstuser1 = pm.readAll(user1.getIdPanier());
+            List<Article> lstArticle1 = new ArrayList<Article>();
             float totalHT1 = 0;
             for(int i = 0 ; i < lstuser1.size() ; i++) {
                 List<Object> lstemp = lstuser1.get(i);
                 System.out.println("\nArticle : " + lstemp.get(0) + "\nQuantite : " + lstemp.get(1) + "\nPrix HT : " + lstemp.get(2));
                 totalHT1 += Float.parseFloat(lstemp.get(2).toString());
+                lstArticle1.add((Article)lstemp.get(0));
             }
             System.out.println("Somme HT du panier = " + totalHT1);
             System.out.println("Somme TTC du panier = " + totalHT1 * 1.212);
 
             //affichage du panier du client 2
             List<List<Object>> lstuser2 = pm.readAll(user2.getIdPanier());
+            List<Article> lstArticle2 = new ArrayList<Article>();
             float totalHT2 = 0;
             for(int i = 0 ; i < lstuser2.size() ; i++) {
                 List<Object> lstemp = lstuser2.get(i);
                 System.out.println("\nArticle : " + lstemp.get(0) + "\nQuantite : " + lstemp.get(1) + "\nPrix HT : " + lstemp.get(2));
                 totalHT2 += Float.parseFloat(lstemp.get(2).toString());
+                lstArticle2.add((Article)lstemp.get(0));
             }
             System.out.println("Somme HT du panier = " + totalHT2);
             System.out.println("Somme TTC du panier = " + totalHT2 * 1.212);
 
+            /*Cette partie ne marche pas et je n'ai plus le temps de trouver le problème :/
+            //creation de la vente user2
+            CommandeManager commMa = new CommandeManager(conn);
+            Commande cmuser2 = new Commande(user2.getUsername(), new java.sql.Date((new Date().getTime())), totalHT2);
+            commMa.create(cmuser2, lstArticle2, user2.getIdPanier());
+
+            Commande cmuser1 = new Commande(user1.getUsername(), new java.sql.Date((new Date().getTime())), totalHT1);
+            commMa.create(cmuser1, lstArticle1,user1.getIdPanier());
+            */
+            
             conn.commit();
         } catch (Exception e) {
             e.printStackTrace();
