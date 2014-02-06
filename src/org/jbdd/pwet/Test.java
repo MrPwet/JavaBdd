@@ -47,6 +47,25 @@ public class Test {
                 System.out.println(it.next());
             }
 
+            //Création du panier pour le client 1;
+            ClientManager cm = new ClientManager(conn);
+            Client user1 = new Client("user1", "machin");
+            cm.create(user1);
+            PanierManager pm = new PanierManager(conn);
+            pm.addArticle(user1.getIdPanier(), kitReflex.getIdArticle(), 1);
+            pm.addArticle(user1.getIdPanier(), filtre.getIdArticle(), 2);
+            pm.addArticle(user1.getIdPanier(), objectif.getIdArticle(), 1);
+
+            //Création du panier pour le client 2
+            Client user2 = new Client("user2", "chose");
+            cm.create(user2);
+            pm.addArticle(user2.getIdPanier(), reflex.getIdArticle(),1);
+            pm.addArticle(user2.getIdPanier(), zoom.getIdArticle(), 1);
+            pm.addArticle(user2.getIdPanier(), objectif.getIdArticle(),1);
+            pm.addArticle(user2.getIdPanier(), filtre.getIdArticle(),2);
+            pm.update(user2.getIdPanier(), reflex.getIdArticle(), 2);
+            pm.delete(user2.getIdPanier(), filtre.getIdArticle());
+
             conn.commit();
         } catch (Exception e) {
             e.printStackTrace();

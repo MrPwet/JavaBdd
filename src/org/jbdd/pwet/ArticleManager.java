@@ -20,10 +20,12 @@ public class ArticleManager {
     public int create(Article article) {
         int n = -1;
         PreparedStatement pstm = null;
+        int idArticle = 0;
+        ResultSet rset = null;
 
         try {
             String sql = "insert into Article values(null,?,?,?,?);";
-            pstm = conn.prepareStatement(sql);
+            pstm = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             int i = 1;
             pstm.setString(i++,article.getNomArticle());
             pstm.setBigDecimal(i++, article.getPrixArticle());
@@ -31,6 +33,11 @@ public class ArticleManager {
             pstm.setString(i++,article.getCategorie());
 
             n = pstm.executeUpdate();
+            rset = pstm.getGeneratedKeys();
+            if(rset.next()) {
+                idArticle = rset.getInt(1);
+            }
+            article.setIdArticle(idArticle);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
